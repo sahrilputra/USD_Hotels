@@ -2,130 +2,98 @@ package page;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import org.jdatepicker.JDatePanel;
-import org.jdatepicker.JDatePicker;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
+
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
-public class BookingPanel {
+public class BookingPanel extends JPanel {
 
-    private JFrame frame;
-
-    public BookingPanel() {
-        initialize();
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            createAndShowGUI();
+        });
     }
 
-    private void initialize() {
-        frame = new JFrame("Hotel Booking");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+    private static void createAndShowGUI() {
+        JFrame frame = new JFrame("Hotel Booking");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
 
-        createBookingPanel();
+        // Main Panel
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        frame.setVisible(true);
-    }
-
-    private void createBookingPanel() {
-        JPanel bookingPanel = new JPanel(new BorderLayout());
-
-        // Header
-        JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(Color.LIGHT_GRAY);
-        JLabel titleLabel = new JLabel("Hotel Booking Page");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        headerPanel.add(titleLabel);
-
-        // Room Information
+        // Room Information Panel
         JPanel roomInfoPanel = new JPanel();
+        roomInfoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         roomInfoPanel.setLayout(new BoxLayout(roomInfoPanel, BoxLayout.Y_AXIS));
-
-        // Image
-        ImageIcon hotelImage = new ImageIcon("hotel_image.jpg"); // Add your hotel image path
-        JLabel imageLabel = new JLabel(hotelImage);
-        roomInfoPanel.add(imageLabel);
 
         // Room details
         JLabel roomDetailsLabel = new JLabel("Deluxe Room - King Bed");
+        roomDetailsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         roomInfoPanel.add(roomDetailsLabel);
 
         // Price
         JLabel priceLabel = new JLabel("Price per night: $150");
+        priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         roomInfoPanel.add(priceLabel);
 
-        // Date Selection
-        JPanel datePanel = new JPanel();
-        JLabel checkinLabel = new JLabel("Check-in Date:");
-        UtilDateModel checkinModel = new UtilDateModel();
-        JDatePanel checkinDatePanel = new JDatePanelImpl(checkinModel); // Modify this line
-        JDatePicker checkinDatePicker = new JDatePickerImpl(checkinDatePanel, null); // Modify this line
-        datePanel.add(checkinLabel);
-        datePanel.add(checkinDatePicker);
+        mainPanel.add(roomInfoPanel);
 
-        JLabel checkoutLabel = new JLabel("Check-out Date:");
-        UtilDateModel checkoutModel = new UtilDateModel();
-        JDatePanel checkoutDatePanel = new JDatePanelImpl(checkoutModel); // Modify this line
-        JDatePicker checkoutDatePicker = new JDatePickerImpl(checkoutDatePanel, null); // Modify this line
-        datePanel.add(checkoutLabel);
-        datePanel.add(checkoutDatePicker);
+        // Date Selection Panel
+        UtilDateModel model = new UtilDateModel();
+        Properties properties = new Properties();
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, null);
+        JPanel dateSelectionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        dateSelectionPanel.add(new JLabel("Check-in Date:"));
+        dateSelectionPanel.add(datePicker);
+        dateSelectionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(dateSelectionPanel);
 
-        // Guest Information
+        // Guest Information Panel
         JPanel guestInfoPanel = new JPanel();
         guestInfoPanel.setLayout(new BoxLayout(guestInfoPanel, BoxLayout.Y_AXIS));
 
-        JLabel guestsLabel = new JLabel("Number of Guests:");
-        JTextField guestsField = new JTextField(5);
+        // Number of Guests Selector (set to 1, 2, 3, 4)
+        Integer[] guestNumbers = {1, 2, 3, 4};
+        JComboBox<Integer> guestsSelector = new JComboBox<>(guestNumbers);
+        guestInfoPanel.add(new JLabel("Number of Guests:"));
+        guestInfoPanel.add(guestsSelector);
 
-        JLabel guestNamesLabel = new JLabel("Guest Names:");
-        JTextArea guestNamesTextArea = new JTextArea(4, 20);
-        JScrollPane guestNamesScrollPane = new JScrollPane(guestNamesTextArea);
+        // Guest Name
+        JTextField guestNameField = new JTextField(10); // Adjusted size
+        guestInfoPanel.add(new JLabel("Guest Name:"));
+        guestInfoPanel.add(guestNameField);
 
-        guestInfoPanel.add(guestsLabel);
-        guestInfoPanel.add(guestsField);
-        guestInfoPanel.add(guestNamesLabel);
-        guestInfoPanel.add(guestNamesScrollPane);
+        mainPanel.add(guestInfoPanel);
 
+        // Book button
         JButton bookButton = new JButton("Book Now");
-        bookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implement booking logic
-                String checkinDate = checkinDatePicker.getJFormattedTextField().getText();
-                String checkoutDate = checkoutDatePicker.getJFormattedTextField().getText();
-                String numGuests = guestsField.getText();
-                String guestNames = guestNamesTextArea.getText();
+        bookButton.addActionListener(e -> {
+            Date selectedDate = (Date) model.getValue();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String checkinDate = sdf.format(selectedDate);
+            int numGuests = (int) guestsSelector.getSelectedItem();
+            String guestName = guestNameField.getText();
 
-                // You can add your booking logic here
-
-                JOptionPane.showMessageDialog(frame, "Booking Successful!");
-                frame.dispose();
-            }
+            JOptionPane.showMessageDialog(frame, "Booking Successful!\nCheck-in Date: " + checkinDate +
+                    "\nNumber of Guests: " + numGuests + "\nGuest Name: " + guestName);
         });
 
-        // Price Information
-        JPanel pricePanel = new JPanel();
-        JLabel totalPriceLabel = new JLabel("Total Price: $300"); // You can calculate the total price based on the
-                                                                  // selected dates and room rate
-        pricePanel.add(totalPriceLabel);
+        bookButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(bookButton);
 
-        // Add components to booking panel
-        bookingPanel.add(headerPanel, BorderLayout.NORTH);
-        bookingPanel.add(roomInfoPanel, BorderLayout.CENTER);
-        bookingPanel.add(datePanel, BorderLayout.WEST);
-        bookingPanel.add(guestInfoPanel, BorderLayout.EAST);
-        bookingPanel.add(bookButton, BorderLayout.SOUTH);
-        bookingPanel.add(pricePanel, BorderLayout.SOUTH);
+        // Set up the main frame layout
+        frame.setLayout(new BorderLayout());
+        frame.add(mainPanel, BorderLayout.CENTER);
 
-        // Add booking panel to the frame
-        frame.add(bookingPanel);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            BookingPanel bookingPanel = new BookingPanel();
-        });
+        // Center the frame on the screen
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

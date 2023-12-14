@@ -3,8 +3,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class db {
-    private String url = "jdbc:mysql://localhost:3306/hotel_usd";;
-    private String username = "root";;
+    private String url = "jdbc:mysql://localhost:3306/hotel_usd";
+    private String username = "root";
     private String password = "";
     private Connection connection;
 
@@ -26,7 +26,10 @@ public class db {
 
     void disconnectDb() {
         try {
-            connection.close();
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Connection closed.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

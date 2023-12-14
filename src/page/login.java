@@ -5,12 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-
 public class login extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
+    private JButton signupButton; // Added signup button
     private ImageIcon banner = new ImageIcon("C:\\Usd_hotel\\src\\assets\\usd-banner.png");
 
     public static void main(String[] args) {
@@ -26,14 +25,12 @@ public class login extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 2));
 
-        // Left pane - displaying the banner in the center
         JPanel leftPane = new JPanel();
         leftPane.setLayout(new BorderLayout());
         leftPane.setBackground(Color.decode("#AA323C"));
         JLabel bannerLabel = new JLabel(banner);
         leftPane.add(bannerLabel, BorderLayout.CENTER);
 
-        // Right pane - displaying the login form
         JPanel rightPane = new JPanel();
         rightPane.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -44,6 +41,7 @@ public class login extends JFrame {
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         loginButton = new JButton("Login");
+        signupButton = new JButton("Signup");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -62,16 +60,13 @@ public class login extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 2;
         rightPane.add(loginButton, gbc);
-
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 3;
-        rightPane.add(new JLabel(), gbc);
+        rightPane.add(new JLabel("Doesnt have Acoount? Register Now"), gbc);
 
         gbc.gridx = 1;
-        rightPane.add(new JLabel(), gbc);
-
-        gbc.gridx = 2;
-        rightPane.add(new JLabel(), gbc);
+        gbc.gridy = 4;
+        rightPane.add(signupButton, gbc);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -90,11 +85,18 @@ public class login extends JFrame {
             }
         });
 
+        signupButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Singup singup = new Singup();
+                singup.setVisible(true);
+                setVisible(false);
+            }
+        });
         panel.add(leftPane);
         panel.add(rightPane);
 
         add(panel);
         setVisible(true);
     }
-
 }

@@ -6,14 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.text.*;
 
-public class SignIn extends JFrame {
+public class Singup extends JFrame {
     private ImageIcon banner = new ImageIcon("C:\\Usd_hotel\\src\\assets\\usd-banner.png");
 
     public static void main(String[] args) {
-        new SignIn();
+        new Singup();
     }
 
-    public SignIn() {
+    public Singup() {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(949, 758);
@@ -91,8 +91,6 @@ public class SignIn extends JFrame {
         gbc.gridy = 5;
         rightPane.add(signUp, gbc);
 
-        // singup
-
         signUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,10 +110,10 @@ public class SignIn extends JFrame {
             }
         });
 
-        // login
         gbc.gridx = 1;
         gbc.gridy = 7;
         rightPane.add(loginButton, gbc);
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -141,8 +139,6 @@ public class SignIn extends JFrame {
         add(panel);
         setVisible(true);
 
-        // Restrict phone number field to accept only numeric input with a maximum of 15
-        // digits
         phoneNumberField.setDocument(new PlainDocument() {
             @Override
             public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {

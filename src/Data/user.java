@@ -10,7 +10,6 @@ public class user {
     private String password;
     private String email;
     private int phone;
-
     public user(String username, String password, String email, int phone, String fullName) {
         this.fullName = fullName;
         this.phone = phone;
@@ -68,4 +67,6 @@ public class user {
     public static List<user> getAllUsers() {
         return userList;
     }
+
+    
 }

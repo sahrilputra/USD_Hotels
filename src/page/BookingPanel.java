@@ -12,8 +12,7 @@ import org.jdatepicker.impl.UtilDateModel;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
-
-import Components.DatePicker;
+import javax.swing.JFrame;
 
 public class BookingPanel extends JPanel {
 
@@ -22,18 +21,21 @@ public class BookingPanel extends JPanel {
     private JDatePicker checkoutPicker;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BookingPanel().display());
+        BookingPanel bookingPanel = new BookingPanel();
+        bookingPanel.display();
     }
 
     private void initialValues() {
         frame = new JFrame("Booking Panel");
+        frame.setSize(949, 758);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(949, 758);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(true);
+
     }
 
-    private void display() {
+    public void display() {
         initialValues();
 
         JPanel panel = new JPanel(new GridLayout(1, 2));
@@ -52,7 +54,6 @@ public class BookingPanel extends JPanel {
         JLabel guestNameLabel = new JLabel("Guest Name:");
         JTextField guestNameField = new JTextField(20);
 
-        // ComboBox for total guests
         JLabel totalGuestLabel = new JLabel("Total Guests:");
         String[] totalGuest = { "1", "2", "3", "4" };
         JComboBox<String> totalGuestComboBox = new JComboBox<>(totalGuest);
@@ -65,12 +66,14 @@ public class BookingPanel extends JPanel {
         checkoutPicker = createDatePicker();
         JLabel checkoutSelectedDateLabel = new JLabel("Selected Date: ");
 
+        JLabel totalLabel = new JLabel("Total" + " " + "IDR 1000000");
+        totalLabel.setHorizontalAlignment(JLabel.RIGHT);
+
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
             System.out.println("Submit button clicked");
         });
 
-        // gbc
         gbc.gridx = 0;
         gbc.gridy = 0;
         rightPane.add(guestNameLabel, gbc);
@@ -93,19 +96,15 @@ public class BookingPanel extends JPanel {
         rightPane.add((Component) checkinPicker, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 3;
-        rightPane.add(checkinSelectedDateLabel, gbc);
-
-        gbc.gridx = 0;
         gbc.gridy = 4;
         rightPane.add(checkoutLabel, gbc);
 
         gbc.gridx = 1;
         rightPane.add((Component) checkoutPicker, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 5;
-        rightPane.add(checkoutSelectedDateLabel, gbc);
+        rightPane.add(totalLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 6;
@@ -115,10 +114,8 @@ public class BookingPanel extends JPanel {
         panel.add(rightPane);
 
         frame.add(panel);
-        frame.pack();
         frame.setVisible(true);
 
-        // Add ActionListener to update selected date labels
         checkinPicker.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Date selectedDate = (Date) checkinPicker.getModel().getValue();
@@ -142,6 +139,22 @@ public class BookingPanel extends JPanel {
         UtilDateModel model = new UtilDateModel();
         Properties properties = new Properties();
         JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
-        return new JDatePickerImpl(datePanel, null);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, null);
+
+        datePicker.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date selectedDate = (Date) datePicker.getModel().getValue();
+
+                if (selectedDate != null) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String formattedDate = dateFormat.format(selectedDate);
+                    System.out.println(formattedDate);
+                    datePicker.getJFormattedTextField().setText(formattedDate);
+                }
+            }
+        });
+
+        return datePicker;
     }
 }

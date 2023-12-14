@@ -2,6 +2,9 @@ package Components;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import page.BookingPanel;
+
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -69,7 +72,6 @@ public class CustomCardPanel extends JPanel {
         footerPanel.setBorder(new EmptyBorder(margin, margin, margin, margin));
 
         JLabel footerLabel = new JLabel("DESCRIPTION Goes Here");
-        // ...
 
         footerPanel.add(footerLabel, BorderLayout.WEST);
 
@@ -79,6 +81,8 @@ public class CustomCardPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Reservation button clicked");
+                BookingPanel bookingPanel = new BookingPanel();
+                bookingPanel.display();
             }
         });
 

@@ -15,6 +15,15 @@ public class NewRooms extends JFrame {
     private JButton uploadButton;
     private JLabel imageLabel;
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new NewRooms().setVisible(true);
+            }
+        });
+    }
+
     public NewRooms() {
         setTitle("New Room");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,12 +125,4 @@ public class NewRooms extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new NewRooms().setVisible(true);
-            }
-        });
-    }
 }

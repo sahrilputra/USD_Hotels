@@ -114,8 +114,8 @@ public class MainMenu {
 
     // DO NOT TOUCH THIS
     private void addCardToContentPanel(JPanel card) {
-        contentPanel.add(card, "Card 1"); 
-        cardLayout.show(contentPanel, "Card 1"); 
+        contentPanel.add(card, "Card 1");
+        cardLayout.show(contentPanel, "Card 1");
     }
 
     private JPanel createCard(String cardName) {

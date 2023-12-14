@@ -12,33 +12,45 @@ public class navbar extends JPanel {
     private JPanel cardPanel;
 
     public navbar(CardLayout cardLayout, JPanel cardPanel) {
+        System.out.println("cardLayout: " + cardLayout); // Tambahkan log ini
+        System.out.println("cardPanel: " + cardPanel); // Tambahkan log ini
+
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
 
-        mainMenuLabel = new JLabel("Home");
-        historyLabel = new JLabel("History");
+        mainMenuLabel = createNavbarLabel("Home");
+        historyLabel = createNavbarLabel("History");
 
         historyLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Ganti ke halaman riwayat saat label "History" diklik
-                cardLayout.show(cardPanel, "historyPage");
+                showHistoryPage();
             }
         });
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(Color.decode("#AA323C"));
 
-        add(mainMenuLabel);
-        add(Box.createHorizontalStrut(10));
-        add(historyLabel);
+        addLabelsToNavbar(mainMenuLabel, historyLabel);
+    }
 
-        mainMenuLabel.setForeground(Color.WHITE);
-        mainMenuLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        historyLabel.setForeground(Color.WHITE);
-        historyLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    private JLabel createNavbarLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+        return label;
+    }
 
-        mainMenuLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
-        historyLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+    private void addLabelsToNavbar(JLabel... labels) {
+        for (JLabel label : labels) {
+            add(label);
+            add(Box.createHorizontalStrut(10));
+        }
+    }
+
+    private void showHistoryPage() {
+        System.out.println("Switching to historyCard");
+        cardLayout.show(cardPanel, "historyCard");
     }
 }

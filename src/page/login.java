@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+
 public class login extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -79,6 +81,9 @@ public class login extends JFrame {
 
                 if (!username.isEmpty() && !password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Login successful!");
+                    setVisible(false);
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.displayHomePage();
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password!");
                 }
